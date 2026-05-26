@@ -12,9 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OperadorIndexRouteImport } from './routes/operador/index'
+import { Route as FundacionIndexRouteImport } from './routes/fundacion/index'
 import { Route as OperadorBuscarRouteImport } from './routes/operador/buscar'
+import { Route as FundacionPersonasRouteImport } from './routes/fundacion/personas'
+import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as OperadorRegistroDniRouteImport } from './routes/operador/registro.$dni'
 import { Route as OperadorPersonaVinculoIdRouteImport } from './routes/operador/persona.$vinculoId'
+import { Route as FundacionPersonaVinculoIdRouteImport } from './routes/fundacion/persona.$vinculoId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -31,9 +35,24 @@ const OperadorIndexRoute = OperadorIndexRouteImport.update({
   path: '/operador/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FundacionIndexRoute = FundacionIndexRouteImport.update({
+  id: '/fundacion/',
+  path: '/fundacion/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperadorBuscarRoute = OperadorBuscarRouteImport.update({
   id: '/operador/buscar',
   path: '/operador/buscar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FundacionPersonasRoute = FundacionPersonasRouteImport.update({
+  id: '/fundacion/personas',
+  path: '/fundacion/personas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
+  id: '/admin/usuarios',
+  path: '/admin/usuarios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OperadorRegistroDniRoute = OperadorRegistroDniRouteImport.update({
@@ -47,20 +66,34 @@ const OperadorPersonaVinculoIdRoute =
     path: '/operador/persona/$vinculoId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const FundacionPersonaVinculoIdRoute =
+  FundacionPersonaVinculoIdRouteImport.update({
+    id: '/fundacion/persona/$vinculoId',
+    path: '/fundacion/persona/$vinculoId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
+  '/fundacion/personas': typeof FundacionPersonasRoute
   '/operador/buscar': typeof OperadorBuscarRoute
+  '/fundacion/': typeof FundacionIndexRoute
   '/operador/': typeof OperadorIndexRoute
+  '/fundacion/persona/$vinculoId': typeof FundacionPersonaVinculoIdRoute
   '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
   '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
+  '/fundacion/personas': typeof FundacionPersonasRoute
   '/operador/buscar': typeof OperadorBuscarRoute
+  '/fundacion': typeof FundacionIndexRoute
   '/operador': typeof OperadorIndexRoute
+  '/fundacion/persona/$vinculoId': typeof FundacionPersonaVinculoIdRoute
   '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
   '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
@@ -68,8 +101,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
+  '/fundacion/personas': typeof FundacionPersonasRoute
   '/operador/buscar': typeof OperadorBuscarRoute
+  '/fundacion/': typeof FundacionIndexRoute
   '/operador/': typeof OperadorIndexRoute
+  '/fundacion/persona/$vinculoId': typeof FundacionPersonaVinculoIdRoute
   '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
   '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
@@ -78,24 +115,36 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/admin/usuarios'
+    | '/fundacion/personas'
     | '/operador/buscar'
+    | '/fundacion/'
     | '/operador/'
+    | '/fundacion/persona/$vinculoId'
     | '/operador/persona/$vinculoId'
     | '/operador/registro/$dni'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
+    | '/admin/usuarios'
+    | '/fundacion/personas'
     | '/operador/buscar'
+    | '/fundacion'
     | '/operador'
+    | '/fundacion/persona/$vinculoId'
     | '/operador/persona/$vinculoId'
     | '/operador/registro/$dni'
   id:
     | '__root__'
     | '/'
     | '/login'
+    | '/admin/usuarios'
+    | '/fundacion/personas'
     | '/operador/buscar'
+    | '/fundacion/'
     | '/operador/'
+    | '/fundacion/persona/$vinculoId'
     | '/operador/persona/$vinculoId'
     | '/operador/registro/$dni'
   fileRoutesById: FileRoutesById
@@ -103,8 +152,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  AdminUsuariosRoute: typeof AdminUsuariosRoute
+  FundacionPersonasRoute: typeof FundacionPersonasRoute
   OperadorBuscarRoute: typeof OperadorBuscarRoute
+  FundacionIndexRoute: typeof FundacionIndexRoute
   OperadorIndexRoute: typeof OperadorIndexRoute
+  FundacionPersonaVinculoIdRoute: typeof FundacionPersonaVinculoIdRoute
   OperadorPersonaVinculoIdRoute: typeof OperadorPersonaVinculoIdRoute
   OperadorRegistroDniRoute: typeof OperadorRegistroDniRoute
 }
@@ -132,11 +185,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperadorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fundacion/': {
+      id: '/fundacion/'
+      path: '/fundacion'
+      fullPath: '/fundacion/'
+      preLoaderRoute: typeof FundacionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/operador/buscar': {
       id: '/operador/buscar'
       path: '/operador/buscar'
       fullPath: '/operador/buscar'
       preLoaderRoute: typeof OperadorBuscarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fundacion/personas': {
+      id: '/fundacion/personas'
+      path: '/fundacion/personas'
+      fullPath: '/fundacion/personas'
+      preLoaderRoute: typeof FundacionPersonasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/usuarios': {
+      id: '/admin/usuarios'
+      path: '/admin/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AdminUsuariosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/operador/registro/$dni': {
@@ -153,14 +227,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperadorPersonaVinculoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fundacion/persona/$vinculoId': {
+      id: '/fundacion/persona/$vinculoId'
+      path: '/fundacion/persona/$vinculoId'
+      fullPath: '/fundacion/persona/$vinculoId'
+      preLoaderRoute: typeof FundacionPersonaVinculoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  AdminUsuariosRoute: AdminUsuariosRoute,
+  FundacionPersonasRoute: FundacionPersonasRoute,
   OperadorBuscarRoute: OperadorBuscarRoute,
+  FundacionIndexRoute: FundacionIndexRoute,
   OperadorIndexRoute: OperadorIndexRoute,
+  FundacionPersonaVinculoIdRoute: FundacionPersonaVinculoIdRoute,
   OperadorPersonaVinculoIdRoute: OperadorPersonaVinculoIdRoute,
   OperadorRegistroDniRoute: OperadorRegistroDniRoute,
 }
