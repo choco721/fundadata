@@ -11,7 +11,7 @@ export const getRouter = () => {
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
     defaultSsr: false,
-  });
+  } as any);
 
   return router;
 };
