@@ -13,7 +13,7 @@ export const Route = createFileRoute("/fundacion/")({
 
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-.fd-root { --bg:#F4F2EE; --surface:#FFFFFF; --surface2:#EDEBE6; --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.14); --text:#1A1917; --text2:#6B6860; --text3:#9C9A93; --teal:#0F6E56; --teal-light:#E1F5EE; --teal-mid:#1D9E75; --blue:#185FA5; --blue-light:#E6F1FB; --purple:#534AB7; --purple-light:#EEEDFE; --amber:#854F0B; --amber-light:#FAEEDA; --amber-mid:#EF9F27; --red:#A32D2D; --red-light:#FCEBEB; --gray:#5F5E5A; --gray-light:#F1EFE8; --fd-radius:12px; --fd-radius-sm:8px; font-family:'DM Sans',sans-serif; color:var(--text); background:var(--bg); margin:-1rem; padding:0; }
+.fd-root { --bg:#F4F2EE; --surface:#FFFFFF; --surface2:#EDEBE6; --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.14); --text:#1A1917; --text2:#6B6860; --text3:#9C9A93; --teal:#0F6E56; --teal-light:#E1F5EE; --teal-mid:#1D9E75; --blue:#185FA5; --blue-light:#E6F1FB; --purple:#534AB7; --purple-light:#EEEDFE; --amber:#854F0B; --amber-light:#FAEEDA; --amber-mid:#EF9F27; --red:#A32D2D; --red-light:#FCEBEB; --gray:#5F5E5A; --gray-light:#F1EFE8; --fd-radius:12px; --fd-radius-sm:8px; font-family:'DM Sans',sans-serif; color:var(--text); background:var(--bg); margin:-1rem -100vw -6rem; padding:1rem 100vw 6rem; min-height:calc(100vh - 56px); }
 .fd-root *, .fd-root *::before, .fd-root *::after { box-sizing:border-box; }
 .fd-wrapper { max-width:1100px; margin:0 auto; padding:1.5rem 1rem; }
 .fd-section-label { font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; margin:1.75rem 0 0.75rem; }
