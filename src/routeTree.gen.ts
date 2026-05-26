@@ -13,6 +13,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OperadorIndexRouteImport } from './routes/operador/index'
 import { Route as OperadorBuscarRouteImport } from './routes/operador/buscar'
+import { Route as OperadorRegistroDniRouteImport } from './routes/operador/registro.$dni'
+import { Route as OperadorPersonaVinculoIdRouteImport } from './routes/operador/persona.$vinculoId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -34,18 +36,33 @@ const OperadorBuscarRoute = OperadorBuscarRouteImport.update({
   path: '/operador/buscar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OperadorRegistroDniRoute = OperadorRegistroDniRouteImport.update({
+  id: '/operador/registro/$dni',
+  path: '/operador/registro/$dni',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperadorPersonaVinculoIdRoute =
+  OperadorPersonaVinculoIdRouteImport.update({
+    id: '/operador/persona/$vinculoId',
+    path: '/operador/persona/$vinculoId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/operador/buscar': typeof OperadorBuscarRoute
   '/operador/': typeof OperadorIndexRoute
+  '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
+  '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/operador/buscar': typeof OperadorBuscarRoute
   '/operador': typeof OperadorIndexRoute
+  '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
+  '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +70,34 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/operador/buscar': typeof OperadorBuscarRoute
   '/operador/': typeof OperadorIndexRoute
+  '/operador/persona/$vinculoId': typeof OperadorPersonaVinculoIdRoute
+  '/operador/registro/$dni': typeof OperadorRegistroDniRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/operador/buscar' | '/operador/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/operador/buscar'
+    | '/operador/'
+    | '/operador/persona/$vinculoId'
+    | '/operador/registro/$dni'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/operador/buscar' | '/operador'
-  id: '__root__' | '/' | '/login' | '/operador/buscar' | '/operador/'
+  to:
+    | '/'
+    | '/login'
+    | '/operador/buscar'
+    | '/operador'
+    | '/operador/persona/$vinculoId'
+    | '/operador/registro/$dni'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/operador/buscar'
+    | '/operador/'
+    | '/operador/persona/$vinculoId'
+    | '/operador/registro/$dni'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +105,8 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   OperadorBuscarRoute: typeof OperadorBuscarRoute
   OperadorIndexRoute: typeof OperadorIndexRoute
+  OperadorPersonaVinculoIdRoute: typeof OperadorPersonaVinculoIdRoute
+  OperadorRegistroDniRoute: typeof OperadorRegistroDniRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +139,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperadorBuscarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/operador/registro/$dni': {
+      id: '/operador/registro/$dni'
+      path: '/operador/registro/$dni'
+      fullPath: '/operador/registro/$dni'
+      preLoaderRoute: typeof OperadorRegistroDniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operador/persona/$vinculoId': {
+      id: '/operador/persona/$vinculoId'
+      path: '/operador/persona/$vinculoId'
+      fullPath: '/operador/persona/$vinculoId'
+      preLoaderRoute: typeof OperadorPersonaVinculoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +161,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   OperadorBuscarRoute: OperadorBuscarRoute,
   OperadorIndexRoute: OperadorIndexRoute,
+  OperadorPersonaVinculoIdRoute: OperadorPersonaVinculoIdRoute,
+  OperadorRegistroDniRoute: OperadorRegistroDniRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
