@@ -88,9 +88,14 @@ function Buscar() {
           <CardHeader><CardTitle className="text-sm text-accent">Persona encontrada</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             <p className="font-medium">{result.nombre_completo}</p>
-            <p className="text-xs text-muted-foreground">
-              DNI {result.dni} · {result.barrio} · {result.sexo}
-            </p>
+            {result.barrio && (
+              <p className="text-xs text-muted-foreground">
+                DNI {result.dni} · {result.barrio} · {result.sexo}
+              </p>
+            )}
+            {!result.barrio && (
+              <p className="text-xs text-muted-foreground">DNI {result.dni}</p>
+            )}
             <Button onClick={vincular} className="w-full">
               Vincular a {dispositivo?.nombre}
             </Button>
