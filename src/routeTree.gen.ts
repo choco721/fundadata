@@ -9,38 +9,75 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OperadorIndexRouteImport } from './routes/operador/index'
+import { Route as OperadorBuscarRouteImport } from './routes/operador/buscar'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OperadorIndexRoute = OperadorIndexRouteImport.update({
+  id: '/operador/',
+  path: '/operador/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperadorBuscarRoute = OperadorBuscarRouteImport.update({
+  id: '/operador/buscar',
+  path: '/operador/buscar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/operador/buscar': typeof OperadorBuscarRoute
+  '/operador/': typeof OperadorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/operador/buscar': typeof OperadorBuscarRoute
+  '/operador': typeof OperadorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/operador/buscar': typeof OperadorBuscarRoute
+  '/operador/': typeof OperadorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login' | '/operador/buscar' | '/operador/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/login' | '/operador/buscar' | '/operador'
+  id: '__root__' | '/' | '/login' | '/operador/buscar' | '/operador/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  OperadorBuscarRoute: typeof OperadorBuscarRoute
+  OperadorIndexRoute: typeof OperadorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +85,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/operador/': {
+      id: '/operador/'
+      path: '/operador'
+      fullPath: '/operador/'
+      preLoaderRoute: typeof OperadorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operador/buscar': {
+      id: '/operador/buscar'
+      path: '/operador/buscar'
+      fullPath: '/operador/buscar'
+      preLoaderRoute: typeof OperadorBuscarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  OperadorBuscarRoute: OperadorBuscarRoute,
+  OperadorIndexRoute: OperadorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
