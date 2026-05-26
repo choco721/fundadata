@@ -14,16 +14,349 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dispositivo: {
+        Row: {
+          created_at: string
+          id: string
+          nombre: string
+          tipo: Database["public"]["Enums"]["dispositivo_tipo"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nombre: string
+          tipo: Database["public"]["Enums"]["dispositivo_tipo"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nombre?: string
+          tipo?: Database["public"]["Enums"]["dispositivo_tipo"]
+        }
+        Relationships: []
+      }
+      ficha_dia: {
+        Row: {
+          consumo_activo: boolean
+          consumo_contexto: string | null
+          consumo_sustancias: string | null
+          limitacion_permanente: boolean
+          nivel_educativo: string | null
+          observaciones: string | null
+          situacion_habitacional: string | null
+          tiene_cud: boolean
+          updated_at: string
+          updated_by: string | null
+          vinculo_id: string
+          violencia_familiar: boolean
+          violencia_observaciones: string | null
+          violencia_tipo: string | null
+        }
+        Insert: {
+          consumo_activo?: boolean
+          consumo_contexto?: string | null
+          consumo_sustancias?: string | null
+          limitacion_permanente?: boolean
+          nivel_educativo?: string | null
+          observaciones?: string | null
+          situacion_habitacional?: string | null
+          tiene_cud?: boolean
+          updated_at?: string
+          updated_by?: string | null
+          vinculo_id: string
+          violencia_familiar?: boolean
+          violencia_observaciones?: string | null
+          violencia_tipo?: string | null
+        }
+        Update: {
+          consumo_activo?: boolean
+          consumo_contexto?: string | null
+          consumo_sustancias?: string | null
+          limitacion_permanente?: boolean
+          nivel_educativo?: string | null
+          observaciones?: string | null
+          situacion_habitacional?: string | null
+          tiene_cud?: boolean
+          updated_at?: string
+          updated_by?: string | null
+          vinculo_id?: string
+          violencia_familiar?: boolean
+          violencia_observaciones?: string | null
+          violencia_tipo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ficha_dia_vinculo_id_fkey"
+            columns: ["vinculo_id"]
+            isOneToOne: true
+            referencedRelation: "vinculo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ficha_ninez: {
+        Row: {
+          anio_escolar: string | null
+          consumo_activo: boolean
+          consumo_contexto: string | null
+          consumo_sustancias: string | null
+          discapacidad: boolean
+          escolarizado: boolean
+          observaciones: string | null
+          referenciado_salud: boolean
+          updated_at: string
+          updated_by: string | null
+          vinculo_id: string
+          violencia_familiar: boolean
+          violencia_observaciones: string | null
+          violencia_tipo: string | null
+        }
+        Insert: {
+          anio_escolar?: string | null
+          consumo_activo?: boolean
+          consumo_contexto?: string | null
+          consumo_sustancias?: string | null
+          discapacidad?: boolean
+          escolarizado?: boolean
+          observaciones?: string | null
+          referenciado_salud?: boolean
+          updated_at?: string
+          updated_by?: string | null
+          vinculo_id: string
+          violencia_familiar?: boolean
+          violencia_observaciones?: string | null
+          violencia_tipo?: string | null
+        }
+        Update: {
+          anio_escolar?: string | null
+          consumo_activo?: boolean
+          consumo_contexto?: string | null
+          consumo_sustancias?: string | null
+          discapacidad?: boolean
+          escolarizado?: boolean
+          observaciones?: string | null
+          referenciado_salud?: boolean
+          updated_at?: string
+          updated_by?: string | null
+          vinculo_id?: string
+          violencia_familiar?: boolean
+          violencia_observaciones?: string | null
+          violencia_tipo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ficha_ninez_vinculo_id_fkey"
+            columns: ["vinculo_id"]
+            isOneToOne: true
+            referencedRelation: "vinculo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      historial_cambio: {
+        Row: {
+          created_at: string
+          datos_anteriores: Json | null
+          datos_nuevos: Json | null
+          id: string
+          operacion: string
+          registro_id: string
+          tabla: string
+          user_id: string | null
+          vinculo_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          datos_anteriores?: Json | null
+          datos_nuevos?: Json | null
+          id?: string
+          operacion: string
+          registro_id: string
+          tabla: string
+          user_id?: string | null
+          vinculo_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          datos_anteriores?: Json | null
+          datos_nuevos?: Json | null
+          id?: string
+          operacion?: string
+          registro_id?: string
+          tabla?: string
+          user_id?: string | null
+          vinculo_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historial_cambio_vinculo_id_fkey"
+            columns: ["vinculo_id"]
+            isOneToOne: false
+            referencedRelation: "vinculo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      persona: {
+        Row: {
+          apellido: string
+          barrio: string
+          created_at: string
+          dni: string
+          fecha_nacimiento: string
+          nombre: string
+          nombre_completo: string | null
+          sexo: Database["public"]["Enums"]["sexo_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          apellido: string
+          barrio: string
+          created_at?: string
+          dni: string
+          fecha_nacimiento: string
+          nombre: string
+          nombre_completo?: string | null
+          sexo: Database["public"]["Enums"]["sexo_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          apellido?: string
+          barrio?: string
+          created_at?: string
+          dni?: string
+          fecha_nacimiento?: string
+          nombre?: string
+          nombre_completo?: string | null
+          sexo?: Database["public"]["Enums"]["sexo_tipo"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_dispositivo: {
+        Row: {
+          created_at: string
+          dispositivo_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dispositivo_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dispositivo_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_dispositivo_dispositivo_id_fkey"
+            columns: ["dispositivo_id"]
+            isOneToOne: false
+            referencedRelation: "dispositivo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vinculo: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          dispositivo_id: string
+          dni: string
+          estado: Database["public"]["Enums"]["vinculo_estado"]
+          fecha_alta: string
+          fecha_baja: string | null
+          id: string
+          motivo_egreso: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          dispositivo_id: string
+          dni: string
+          estado?: Database["public"]["Enums"]["vinculo_estado"]
+          fecha_alta?: string
+          fecha_baja?: string | null
+          id?: string
+          motivo_egreso?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          dispositivo_id?: string
+          dni?: string
+          estado?: Database["public"]["Enums"]["vinculo_estado"]
+          fecha_alta?: string
+          fecha_baja?: string | null
+          id?: string
+          motivo_egreso?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vinculo_dispositivo_id_fkey"
+            columns: ["dispositivo_id"]
+            isOneToOne: false
+            referencedRelation: "dispositivo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vinculo_dni_fkey"
+            columns: ["dni"]
+            isOneToOne: false
+            referencedRelation: "persona"
+            referencedColumns: ["dni"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_access_vinculo: { Args: { _vinculo_id: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      user_dispositivo_id: { Args: { _user_id: string }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "operador"
+      dispositivo_tipo: "ninez" | "dia"
+      sexo_tipo: "F" | "M" | "X"
+      vinculo_estado: "activo" | "egresado" | "inasistencia_prolongada"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +483,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "operador"],
+      dispositivo_tipo: ["ninez", "dia"],
+      sexo_tipo: ["F", "M", "X"],
+      vinculo_estado: ["activo", "egresado", "inasistencia_prolongada"],
+    },
   },
 } as const
