@@ -77,6 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "FundaData — Gestión de centros comunitarios" },
       { name: "description", content: "Sistema de gestión para centros de niñez y día: registro, seguimiento y reportes." },
       { name: "author", content: "FundaData" },
+      { property: "og:title", content: "FundaData — Gestión de centros comunitarios" },
+      { name: "twitter:title", content: "FundaData — Gestión de centros comunitarios" },
+      { property: "og:description", content: "Sistema de gestión para centros de niñez y día: registro, seguimiento y reportes." },
+      { name: "twitter:description", content: "Sistema de gestión para centros de niñez y día: registro, seguimiento y reportes." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7781472a-6374-4f3a-8d91-be637149ee7c" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7781472a-6374-4f3a-8d91-be637149ee7c" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       {
