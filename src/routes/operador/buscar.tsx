@@ -29,8 +29,15 @@ function Buscar() {
     e.preventDefault();
     setLoading(true);
     setSearched(false);
-    const { data } = await supabase.from("persona").select("*").eq("dni", dni).maybeSingle();
-    setResult(data);
+    // First try to see full record (if persona is in operator's center)
+    const { data: full } = await supabase.from("persona").select("*").eq("dni", dni).maybeSingle();
+    if (full) {
+      setResult(full);
+    } else {
+      // Otherwise use safe RPC that returns only minimal info
+      const { data: minimal } = await supabase.rpc("buscar_persona_por_dni", { _dni: dni });
+      setResult(minimal && minimal.length > 0 ? minimal[0] : null);
+    }
     setSearched(true);
     setLoading(false);
   }
@@ -81,9 +88,14 @@ function Buscar() {
           <CardHeader><CardTitle className="text-sm text-accent">Persona encontrada</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             <p className="font-medium">{result.nombre_completo}</p>
-            <p className="text-xs text-muted-foreground">
-              DNI {result.dni} · {result.barrio} · {result.sexo}
-            </p>
+            {result.barrio && (
+              <p className="text-xs text-muted-foreground">
+                DNI {result.dni} · {result.barrio} · {result.sexo}
+              </p>
+            )}
+            {!result.barrio && (
+              <p className="text-xs text-muted-foreground">DNI {result.dni}</p>
+            )}
             <Button onClick={vincular} className="w-full">
               Vincular a {dispositivo?.nombre}
             </Button>

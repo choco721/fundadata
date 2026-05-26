@@ -342,6 +342,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      buscar_persona_por_dni: {
+        Args: { _dni: string }
+        Returns: {
+          dni: string
+          existe: boolean
+          nombre_completo: string
+        }[]
+      }
       can_access_vinculo: { Args: { _vinculo_id: string }; Returns: boolean }
       has_role: {
         Args: {
