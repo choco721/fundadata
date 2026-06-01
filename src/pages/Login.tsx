@@ -194,13 +194,6 @@ export const Login: React.FC = () => {
             </button>
           </form>
 
-          {isSignUp && (
-            <div className="mt-5 p-3.5 bg-emerald-500/5 border border-emerald-500/15 rounded-2xl text-center">
-              <p className="text-xs text-slate-400 leading-relaxed">
-                💡 El <span className="text-emerald-400 font-semibold">primer usuario</span> en registrarse se convierte automáticamente en administrador de la Fundación.
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Soy tutor button */}
