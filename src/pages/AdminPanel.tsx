@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase, createSecondaryClient } from '../supabaseClient';
 import type { Dispositivo, UserRole } from '../types';
-import { UserPlus, UserCheck, UserX, Shield, AlertCircle, CheckCircle2, Building2 } from 'lucide-react';
+import { UserPlus, UserCheck, UserX, Shield, AlertCircle, CheckCircle2, Building2, Bell, Send, CheckCircle, XCircle } from 'lucide-react';
 
 interface OperatorWithDevice extends UserRole {
   email?: string;
@@ -27,6 +27,9 @@ export const AdminPanel: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [alertLoading, setAlertLoading] = useState(false);
+  const [alertResult, setAlertResult] = useState<{ ok: boolean; processed: number; results: { dni: string; enviado: boolean; error?: string }[] } | null>(null);
+  const [alertError, setAlertError] = useState<string | null>(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -95,6 +98,21 @@ export const AdminPanel: React.FC = () => {
       await loadData();
     } catch (err: any) {
       setErrorMsg('Error: ' + (err.message || ''));
+    }
+  };
+
+  const handleEnviarAlertas = async () => {
+    setAlertLoading(true);
+    setAlertResult(null);
+    setAlertError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-asistencias');
+      if (error) throw error;
+      setAlertResult(data);
+    } catch (e: any) {
+      setAlertError(e.message || 'Error al invocar la función.');
+    } finally {
+      setAlertLoading(false);
     }
   };
 
@@ -273,6 +291,69 @@ export const AdminPanel: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* ── Alertas de inasistencia ── */}
+      <div className="bg-slate-900/80 border border-slate-800/60 rounded-3xl p-6 shadow-xl space-y-5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-amber-500/15 border border-amber-500/20 rounded-xl flex items-center justify-center">
+            <Bell className="w-4 h-4 text-amber-400" />
+          </div>
+          <div>
+            <h3 className="font-black text-white text-base">Alertas de Inasistencia</h3>
+            <p className="text-slate-500 text-xs mt-0.5">Dispará manualmente el chequeo de 2 días consecutivos de ausencia y el envío de WhatsApp a los tutores.</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleEnviarAlertas}
+          disabled={alertLoading}
+          className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {alertLoading
+            ? <><span className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" /> Procesando...</>
+            : <><Send className="w-4 h-4" /> Enviar alertas ahora</>
+          }
+        </button>
+
+        {alertError && (
+          <div className="animate-slideDown flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/25 rounded-2xl">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+            <p className="text-sm text-red-300 font-medium">{alertError}</p>
+          </div>
+        )}
+
+        {alertResult && (
+          <div className="animate-slideDown space-y-3">
+            <div className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <p className="text-sm text-emerald-300 font-medium">
+                {alertResult.processed === 0
+                  ? 'No hay inasistencias consecutivas para notificar hoy.'
+                  : `Se procesaron ${alertResult.processed} notificación${alertResult.processed !== 1 ? 'es' : ''}.`
+                }
+              </p>
+            </div>
+
+            {alertResult.results.length > 0 && (
+              <div className="divide-y divide-slate-800/60 border border-slate-800/60 rounded-2xl overflow-hidden">
+                {alertResult.results.map((r, i) => (
+                  <div key={i} className="flex items-center gap-3 px-4 py-3">
+                    {r.enviado
+                      ? <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                      : <XCircle className="w-4 h-4 text-red-400 shrink-0" />
+                    }
+                    <span className="text-sm text-slate-300 font-mono">DNI {r.dni}</span>
+                    {r.error && <span className="text-xs text-red-400 truncate">{r.error}</span>}
+                    {r.enviado && <span className="text-xs text-emerald-400 ml-auto">WPP enviado</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };
