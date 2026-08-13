@@ -3,9 +3,11 @@ import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router';
+import { soporteWhatsappUrl } from '../config';
 import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Users, MessageCircle, BookOpen } from 'lucide-react';
 
 const TWILIO_WA_URL = `https://wa.me/14155238886?text=${encodeURIComponent('join music-report')}`;
+const SOPORTE_URL = soporteWhatsappUrl();
 
 export const Login: React.FC = () => {
   const { user, loading: authLoading } = useAuth();
@@ -234,20 +236,22 @@ export const Login: React.FC = () => {
               </div>
 
               {/* Right: Support */}
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-4 sm:py-2">
-                <p className="text-sm text-slate-300 text-center leading-relaxed">
-                  Si su número <span className="text-emerald-400 font-semibold">ya está registrado</span> y tiene alguna consulta:
-                </p>
-                <a
-                  href="https://wa.me/5493471570122"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 py-3 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-500 hover:to-teal-400 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Contactar a soporte
-                </a>
-              </div>
+              {SOPORTE_URL && (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-4 sm:py-2">
+                  <p className="text-sm text-slate-300 text-center leading-relaxed">
+                    Si su número <span className="text-emerald-400 font-semibold">ya está registrado</span> y tiene alguna consulta:
+                  </p>
+                  <a
+                    href={SOPORTE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 py-3 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-500 hover:to-teal-400 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Contactar a soporte
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
