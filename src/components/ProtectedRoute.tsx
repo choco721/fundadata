@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
+import { soporteWhatsappUrl } from '../config';
 import { ShieldAlert, LogOut, Clock, Loader2, MessageCircle } from 'lucide-react';
 
 interface ProtectedRouteProps {
@@ -43,6 +44,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
   if (!user) return <Navigate to="/login" replace />;
 
   if (role === null) {
+    const soporteUrl = soporteWhatsappUrl(
+      `Hola, me registré en FundaData con el correo ${user.email} y necesito que me asignen un centro de trabajo.`
+    );
+
     return (
       <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 text-center shadow-2xl animate-fadeIn">
@@ -53,15 +58,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
           <p className="text-slate-400 text-sm mb-6 leading-relaxed">
             Tu cuenta fue creada correctamente. Comunicate con la Fundación para que te asignen un rol de operador y un centro de trabajo.
           </p>
-          <a
-            href={`https://wa.me/5493471570122?text=${encodeURIComponent(`Hola, me registré en FundaData con el correo ${user.email} y necesito que me asignen un centro de trabajo.`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full mb-4 py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-slate-950 font-black text-sm rounded-2xl transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 flex items-center justify-center gap-2"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Contactar a soporte por WhatsApp
-          </a>
+          {soporteUrl && (
+            <a
+              href={soporteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full mb-4 py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-slate-950 font-black text-sm rounded-2xl transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Contactar a soporte por WhatsApp
+            </a>
+          )}
           <button
             onClick={() => signOut()}
             className="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm"

@@ -7,6 +7,7 @@ import { Login } from './pages/Login';
 import { OperatorDashboard } from './pages/OperatorDashboard';
 import { FoundationDashboard } from './pages/FoundationDashboard';
 import { AdminPanel } from './pages/AdminPanel';
+import { DemoLanding } from './demo/DemoRolePicker';
 
 // Component that switches between Operator and Foundation dashboard depending on user role
 const DashboardSelector: React.FC = () => {
@@ -30,6 +31,10 @@ function App() {
         <Routes>
           {/* Public Login Route */}
           <Route path="/login" element={<Login />} />
+
+          {/* Demo pública — link para compartir. Debe declararse antes del
+              catch-all de abajo. */}
+          <Route path="/demo" element={<DemoLanding />} />
 
           {/* Core App Layout (Protected) */}
           <Route
