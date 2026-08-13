@@ -4,7 +4,8 @@ import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router';
 import { soporteWhatsappUrl } from '../config';
-import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Users, MessageCircle, BookOpen } from 'lucide-react';
+import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Users, MessageCircle, BookOpen, PlayCircle } from 'lucide-react';
+import { DemoRolePicker, DemoDisclaimer } from '../demo/DemoRolePicker';
 
 const TWILIO_WA_URL = `https://wa.me/14155238886?text=${encodeURIComponent('join music-report')}`;
 const SOPORTE_URL = soporteWhatsappUrl();
@@ -19,6 +20,7 @@ export const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [showTutorPanel, setShowTutorPanel] = useState(false);
+  const [showDemoPanel, setShowDemoPanel] = useState(false);
 
   if (authLoading) {
     return (
@@ -201,7 +203,7 @@ export const Login: React.FC = () => {
         {/* Soy tutor button */}
         <button
           type="button"
-          onClick={() => setShowTutorPanel(v => !v)}
+          onClick={() => { setShowTutorPanel(v => !v); setShowDemoPanel(false); }}
           className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition-all text-sm font-semibold"
         >
           <Users className="w-4 h-4" />
@@ -218,7 +220,32 @@ export const Login: React.FC = () => {
           <BookOpen className="w-4 h-4" />
           Guía de uso
         </a>
+
+        {/* Demo app button */}
+        <button
+          type="button"
+          onClick={() => { setShowDemoPanel(v => !v); setShowTutorPanel(false); }}
+          className="mt-3 w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-violet-500/15 to-indigo-400/15 border border-violet-500/30 text-violet-300 hover:from-violet-500/25 hover:to-indigo-400/25 hover:border-violet-500/50 transition-all text-sm font-semibold"
+        >
+          <PlayCircle className="w-4 h-4" />
+          Demo app
+        </button>
       </div>
+
+      {/* Demo panel */}
+      {showDemoPanel && (
+        <div className="relative z-10 w-full max-w-2xl mt-4 px-4 animate-fadeIn">
+          <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 shadow-2xl shadow-black/40">
+            <h2 className="text-base font-black text-white mb-1">Probá la app sin registrarte</h2>
+            <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+              Es la aplicación real con datos de prueba. Elegí con qué rol querés entrar — después podés cambiarlo
+              desde adentro.
+            </p>
+            <DemoRolePicker />
+            <DemoDisclaimer />
+          </div>
+        </div>
+      )}
 
       {/* Tutor panel */}
       {showTutorPanel && (
