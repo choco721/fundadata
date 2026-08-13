@@ -109,12 +109,29 @@ npm install
 
 ### 2. Variables de entorno
 
-Crear `.env.local` en la raíz del proyecto:
+Copiar `.env.example` a `.env.local` y completar:
+
+```bash
+cp .env.example .env.local
+```
 
 ```env
 VITE_SUPABASE_URL=https://<tu-proyecto>.supabase.co
 VITE_SUPABASE_ANON_KEY=<tu-anon-key>
+
+# WhatsApp de soporte de la Fundación, formato internacional sin "+".
+# Alimenta los botones "Contactar a soporte" del login y de la pantalla
+# "Rol Pendiente". Si se deja vacío, esos botones no se renderizan.
+VITE_SOPORTE_WHATSAPP=5490000000000
 ```
+
+> Las variables `VITE_*` se inyectan en el bundle del browser: sirven para no
+> dejar valores de despliegue en el repositorio, **no** para guardar secretos.
+> Los secretos reales (service role key, credenciales de Twilio) viven
+> únicamente en los Secrets de Supabase Edge Functions.
+
+En Vercel hay que cargar las mismas tres variables en
+**Project Settings → Environment Variables**.
 
 ### 3. Base de datos
 

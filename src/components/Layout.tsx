@@ -2,6 +2,8 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Heart, Building2, LayoutDashboard, Settings, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { DEMO_MODE, exitDemo } from '../demo/demoMode';
+import { DemoBanner } from '../demo/DemoBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,6 +32,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const avatarGradient = getAvatarColor(user?.email || '');
 
   const handleLogout = async () => {
+    // En demo el signOut del mock no dispara onAuthStateChange, así que el
+    // usuario quedaría sin sesión y sin redirect. Salimos de la demo directo.
+    if (DEMO_MODE) {
+      exitDemo();
+      return;
+    }
     if (window.confirm('¿Seguro que desea cerrar sesión?')) {
       await signOut();
     }
@@ -42,6 +50,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 flex flex-col">
+
+      {/* ── Banner de modo demo (no renderiza nada fuera de la demo) ── */}
+      <DemoBanner />
 
       {/* ── Navbar ── */}
       <nav className="sticky top-0 z-40 glass border-b border-slate-800/60 shadow-xl shadow-black/20">

@@ -3,9 +3,12 @@ import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router';
-import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Users, MessageCircle } from 'lucide-react';
+import { soporteWhatsappUrl } from '../config';
+import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Users, MessageCircle, BookOpen, PlayCircle } from 'lucide-react';
+import { DemoRolePicker, DemoDisclaimer } from '../demo/DemoRolePicker';
 
 const TWILIO_WA_URL = `https://wa.me/14155238886?text=${encodeURIComponent('join music-report')}`;
+const SOPORTE_URL = soporteWhatsappUrl();
 
 export const Login: React.FC = () => {
   const { user, loading: authLoading } = useAuth();
@@ -17,6 +20,7 @@ export const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [showTutorPanel, setShowTutorPanel] = useState(false);
+  const [showDemoPanel, setShowDemoPanel] = useState(false);
 
   if (authLoading) {
     return (
@@ -199,13 +203,49 @@ export const Login: React.FC = () => {
         {/* Soy tutor button */}
         <button
           type="button"
-          onClick={() => setShowTutorPanel(v => !v)}
+          onClick={() => { setShowTutorPanel(v => !v); setShowDemoPanel(false); }}
           className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition-all text-sm font-semibold"
         >
           <Users className="w-4 h-4" />
           {showTutorPanel ? 'Cerrar' : 'Soy tutor'}
         </button>
+
+        {/* Guía de uso button */}
+        <a
+          href="/guia-fundadata.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-emerald-500/15 to-teal-400/15 border border-emerald-500/30 text-emerald-400 hover:from-emerald-500/25 hover:to-teal-400/25 hover:border-emerald-500/50 transition-all text-sm font-semibold"
+        >
+          <BookOpen className="w-4 h-4" />
+          Guía de uso
+        </a>
+
+        {/* Demo app button */}
+        <button
+          type="button"
+          onClick={() => { setShowDemoPanel(v => !v); setShowTutorPanel(false); }}
+          className="mt-3 w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-violet-500/15 to-indigo-400/15 border border-violet-500/30 text-violet-300 hover:from-violet-500/25 hover:to-indigo-400/25 hover:border-violet-500/50 transition-all text-sm font-semibold"
+        >
+          <PlayCircle className="w-4 h-4" />
+          Demo app
+        </button>
       </div>
+
+      {/* Demo panel */}
+      {showDemoPanel && (
+        <div className="relative z-10 w-full max-w-2xl mt-4 px-4 animate-fadeIn">
+          <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 shadow-2xl shadow-black/40">
+            <h2 className="text-base font-black text-white mb-1">Probá la app sin registrarte</h2>
+            <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+              Es la aplicación real con datos de prueba. Elegí con qué rol querés entrar — después podés cambiarlo
+              desde adentro.
+            </p>
+            <DemoRolePicker />
+            <DemoDisclaimer />
+          </div>
+        </div>
+      )}
 
       {/* Tutor panel */}
       {showTutorPanel && (
@@ -223,20 +263,22 @@ export const Login: React.FC = () => {
               </div>
 
               {/* Right: Support */}
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-4 sm:py-2">
-                <p className="text-sm text-slate-300 text-center leading-relaxed">
-                  Si su número <span className="text-emerald-400 font-semibold">ya está registrado</span> y tiene alguna consulta:
-                </p>
-                <a
-                  href="https://wa.me/5493471570122"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 py-3 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-500 hover:to-teal-400 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Contactar a soporte
-                </a>
-              </div>
+              {SOPORTE_URL && (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-4 sm:py-2">
+                  <p className="text-sm text-slate-300 text-center leading-relaxed">
+                    Si su número <span className="text-emerald-400 font-semibold">ya está registrado</span> y tiene alguna consulta:
+                  </p>
+                  <a
+                    href={SOPORTE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 py-3 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-500 hover:to-teal-400 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Contactar a soporte
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
